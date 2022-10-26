@@ -19,6 +19,10 @@
     "noFallthroughCasesInSwitch": true,
     "strictFunctionTypes": true,
     "allowJs": false,
-    "alwaysStrict": true
+    "alwaysStrict": true,
+    "strict": true,
+    "allowUnreachableCode": false,
+    "noImplicitReturns": true,
+    "noPropertyAccessFromIndexSignature": true
   }
 }
