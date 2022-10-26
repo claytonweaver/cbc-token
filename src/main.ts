@@ -5,7 +5,6 @@ import { AppModule } from './app.module';
 async function bootstrap() {
 
   AWS.config.update({ region: 'us-east-2' });
-  AWS.config.
 
   const app = await NestFactory.create(AppModule);
   await app.listen(3000);
