@@ -1,6 +1,8 @@
-import { BadRequestException, Controller, Get, Logger, Req } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, Logger, Post, Req } from '@nestjs/common';
 import { TokenService } from './token.service';
 import { Headers } from '@nestjs/common';
+import { CreateTokenRequest } from 'src/models/token-request';
+import { validateAllKeysAreTruthy } from 'src/utils/utils';
 
 @Controller('token')
 export class TokenController {
@@ -16,4 +18,12 @@ export class TokenController {
 
         return await this.tokenService.getToken(tokenKey);
     }
+
+    @Post()
+    public async createToken(@Body() createReq: CreateTokenRequest) {
+        validateAllKeysAreTruthy(createReq, new BadRequestException());
+
+        return await this.tokenService.createToken();
+    }
 }
+

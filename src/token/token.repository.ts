@@ -1,6 +1,7 @@
 import { AttributeMap, DocumentClient } from "aws-sdk/clients/dynamodb";
 import * as AWS from 'aws-sdk';
 import { InternalServerErrorException, NotFoundException } from "@nestjs/common";
+import { CreateTokenRequest } from "src/models/token-request";
 
 export class TokenRepository {
     private tableName: string;
@@ -40,5 +41,10 @@ export class TokenRepository {
         }
 
         return tokenValue;
+    }
+
+    public async saveToken(tokenCreateRequest: CreateTokenRequest) {
+        const tokenKey = process.env['TOKEN_KEY'];
+        console.log(tokenKey);
     }
 }
