@@ -23,7 +23,7 @@ export class TokenController {
     public async createToken(@Body() createReq: CreateTokenRequest) {
         validateAllKeysAreTruthy(createReq, new BadRequestException());
 
-        return await this.tokenService.createToken();
+        return await this.tokenService.createToken(createReq);
     }
 }
 

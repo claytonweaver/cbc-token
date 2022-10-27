@@ -17,6 +17,6 @@ export class TokenService {
             throw new ConflictException(`Token already exists for key ${createRequest.tokenKey}`);
         }
 
-        return await this.tokenRepository.createToken(createTokenRequest);
+        // return await this.tokenRepository.createToken(createTokenRequest);
     }
 }
