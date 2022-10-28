@@ -6,17 +6,17 @@ import { TokenRepository } from './token.repository';
 export class TokenService {
     constructor(private tokenRepository: TokenRepository) { }
 
-    public async getToken(tokenKey: string) {
+    public async getToken(tokenKey: string): Promise<string> {
         return await this.tokenRepository.getToken(tokenKey);
     }
 
-    public async createToken(createRequest: CreateTokenRequest) {
+    public async createToken(createRequest: CreateTokenRequest): Promise<void> {
         const existingToken = await this.getToken(createRequest.tokenKey);
 
         if (existingToken) {
             throw new ConflictException(`Token already exists for key ${createRequest.tokenKey}`);
         }
 
-        // return await this.tokenRepository.createToken(createTokenRequest);
+        return await this.tokenRepository.createToken(createRequest);
     }
 }

@@ -1,0 +1,25 @@
+org: cweaver
+app: cbc-token
+service: cbc-token
+
+frameworkVersion: '3'
+
+plugins:
+  - serverless-jetpack
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  region: us-east-2
+  iam:
+    role: arn:aws:iam::227378293791:role/lambda-with-dynamodb
+
+functions:
+  api:
+    handler: dist/lambda.handler
+    events:
+      - http:
+          method: any
+          path: /{proxy+}
+    environment:
+      AWS: ApiGatewayDeployment${sls:instanceId}

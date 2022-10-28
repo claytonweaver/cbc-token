@@ -2,7 +2,7 @@ import { BadRequestException, Body, Controller, Get, Logger, Post, Req } from '@
 import { TokenService } from './token.service';
 import { Headers } from '@nestjs/common';
 import { CreateTokenRequest } from 'src/models/token-request';
-import { validateAllKeysAreTruthy } from 'src/utils/utils';
+import { allValuesTruthy } from 'src/utils/utils';
 
 @Controller('token')
 export class TokenController {
@@ -21,8 +21,9 @@ export class TokenController {
 
     @Post()
     public async createToken(@Body() createReq: CreateTokenRequest) {
-        validateAllKeysAreTruthy(createReq, new BadRequestException());
-
+        if (!allValuesTruthy(createReq)) {
+            throw new BadRequestException('Missing fields on request model');
+        }
         return await this.tokenService.createToken(createReq);
     }
 }

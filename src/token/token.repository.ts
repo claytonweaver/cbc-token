@@ -1,32 +1,31 @@
-import { AttributeMap, DocumentClient } from "aws-sdk/clients/dynamodb";
-import * as AWS from 'aws-sdk';
-import { InternalServerErrorException, NotFoundException } from "@nestjs/common";
+import { InternalServerErrorException, Logger, NotFoundException } from "@nestjs/common";
 import { CreateTokenRequest } from "src/models/token-request";
+import { DynamoDBClient, GetItemCommand } from "@aws-sdk/client-dynamodb";
 
 export class TokenRepository {
+    private db: DynamoDBClient;
     private tableName: string;
-    private db: DocumentClient;
 
     constructor() {
-        this.tableName = 'TokenTable';
-        this.db = new AWS.DynamoDB.DocumentClient();
+        this.db = new DynamoDBClient({ region: 'us-east-2' });
+        this.tableName = 'TokenTable'
     }
 
-    public async getToken(tokenKey: string) {
+    public async getToken(tokenKey: string): Promise<string> {
         let tokenValue = '';
 
         try {
-            const request: DocumentClient.GetItemInput = {
+            var params = {
                 TableName: this.tableName,
                 Key: {
-                    PK: tokenKey
-                },
+                    'TokenKey': { S: 'test' }
+                }
             };
 
-            const result = await this.db.get(request).promise();
+            const result = await this.db.send(new GetItemCommand(params));
 
             if (result.Item) {
-                tokenValue = result.Item['TokenValue']['S'];
+                tokenValue = result.Item['TokenValue']['S'] ?? '';
             }
 
         } catch (error) {
@@ -43,8 +42,24 @@ export class TokenRepository {
         return tokenValue;
     }
 
-    public async saveToken(tokenCreateRequest: CreateTokenRequest) {
-        const tokenKey = process.env['TOKEN_KEY'];
-        console.log(tokenKey);
+    public async createToken(createRequest: CreateTokenRequest): Promise<void> {
+        try {
+            /* const tokenValue = process.env['TOKEN_KEY'];
+            const itemPutRequest: DocumentClient.PutItemInput = {
+                TableName: this.tableName,
+                Item: {
+                    'TokenKey': { S: createRequest.tokenKey },
+                    'TokenValue': { S: tokenValue }
+                }
+            };
+
+            await this.db.put(itemPutRequest).promise(); */
+
+        } catch (error) {
+            throw new InternalServerErrorException(error, 'Error trying to ' +
+                `write token to dynamo db for table ${this.tableName}` +
+                `with token key ${createRequest.tokenKey}`
+            );
+        }
     }
 }
