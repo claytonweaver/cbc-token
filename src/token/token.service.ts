@@ -14,7 +14,8 @@ export class TokenService {
         const existingToken = await this.getToken(createRequest.tokenKey);
 
         if (existingToken) {
-            throw new ConflictException(`Token already exists for key ${createRequest.tokenKey}`);
+            throw new ConflictException(`Token already exists for key ${createRequest.tokenKey}`
+                + ` existing token: ${existingToken}`);
         }
 
         return await this.tokenRepository.createToken(createRequest);

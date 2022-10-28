@@ -1,5 +1,5 @@
-import { InternalServerErrorException, Logger, NotFoundException } from "@nestjs/common";
-import { CreateTokenRequest } from "src/models/token-request";
+import { InternalServerErrorException, Logger, NotFoundException } from '@nestjs/common';
+import { CreateTokenRequest } from 'src/models/token-request';
 export class TokenRepository {
     private tableName: string;
     private db: any;
@@ -16,16 +16,14 @@ export class TokenRepository {
         try {
             var params = {
                 Key: {
-                    "TokenKey": { "S": "test" }
+                    'TokenKey': { 'S': tokenKey }
                 },
-                TableName: "TokenTable"
+                TableName: 'TokenTable'
             };
 
             const result = await this.db.getItem(params).promise();
 
-            /* if (result.Item) {
-                tokenValue = result.Item['TokenValue']['S'] ?? '';
-            } */
+            tokenValue = result['Item']['TokenValue']['S'];
 
         } catch (error) {
             throw new InternalServerErrorException(error, 'Error trying to ' +
@@ -35,7 +33,7 @@ export class TokenRepository {
         }
 
         if (!tokenValue) {
-            throw new NotFoundException(`Token value not found for token key ${tokenKey}`)
+            throw new NotFoundException(`Token value not found for token key ${tokenKey}`);
         }
 
         return tokenValue;
@@ -43,16 +41,16 @@ export class TokenRepository {
 
     public async createToken(createRequest: CreateTokenRequest): Promise<void> {
         try {
-            /* const tokenValue = process.env['TOKEN_KEY'];
-            const itemPutRequest: DocumentClient.PutItemInput = {
+            const tokenValue = process.env['TOKEN_KEY'];
+            const itemPutRequest = {
                 TableName: this.tableName,
                 Item: {
-                    'TokenKey': { S: createRequest.tokenKey },
-                    'TokenValue': { S: tokenValue }
+                    'TokenKey': { 'S': createRequest.tokenKey },
+                    'TokenValue': { 'S': tokenValue }
                 }
             };
 
-            await this.db.put(itemPutRequest).promise(); */
+            await this.db.put(itemPutRequest).promise();
 
         } catch (error) {
             throw new InternalServerErrorException(error, 'Error trying to ' +
