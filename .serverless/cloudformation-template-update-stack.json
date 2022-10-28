@@ -130,7 +130,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/cbc-token/dev/1666916592190-2022-10-28T00:23:12.190Z/cbc-token.zip"
+          "S3Key": "serverless/cbc-token/dev/1666921564647-2022-10-28T01:46:04.647Z/cbc-token.zip"
         },
         "Handler": "s_api.handler",
         "Runtime": "nodejs14.x",
@@ -139,7 +139,7 @@
         "Timeout": 6,
         "Environment": {
           "Variables": {
-            "AWS": "ApiGatewayDeployment1666916547969"
+            "AWS": "ApiGatewayDeployment1666921520342"
           }
         },
         "Role": "arn:aws:iam::227378293791:role/lambda-with-dynamodb"
@@ -148,14 +148,14 @@
         "ApiLogGroup"
       ]
     },
-    "ApiLambdaVersion2ASdvF094g0Emmr5BT9fPW9VVdIOOMVn6nCvrVCYqs": {
+    "ApiLambdaVersionERpMkYVkPunZXGD9mITF2BNSVSxW89EPO53wIQHgo": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "ApiLambdaFunction"
         },
-        "CodeSha256": "dg0zks1Pyh0uhbnGqjX8jcXLYqHXb/8lBLNMSktt73c="
+        "CodeSha256": "euMm+EkPzCy3nBfMRf73RGM0YtJFKmYlSUqcYjibtEQ="
       }
     },
     "ApiGatewayRestApi": {
@@ -231,7 +231,7 @@
         "ApiLambdaPermissionApiGateway"
       ]
     },
-    "ApiGatewayDeployment1666916547969": {
+    "ApiGatewayDeployment1666921520342": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -389,7 +389,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/cbc-token/dev/1666916592190-2022-10-28T00:23:12.190Z/custom-resources.zip"
+          "S3Key": "serverless/cbc-token/dev/1666921564647-2022-10-28T01:46:04.647Z/custom-resources.zip"
         },
         "FunctionName": "cbc-token-dev-custom-resource-apigw-cw-role",
         "Handler": "api-gateway-cloud-watch-role/handler.handler",
@@ -451,7 +451,7 @@
     "ApiLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "ApiLambdaVersion2ASdvF094g0Emmr5BT9fPW9VVdIOOMVn6nCvrVCYqs"
+        "Ref": "ApiLambdaVersionERpMkYVkPunZXGD9mITF2BNSVSxW89EPO53wIQHgo"
       },
       "Export": {
         "Name": "sls-cbc-token-dev-ApiLambdaFunctionQualifiedArn"

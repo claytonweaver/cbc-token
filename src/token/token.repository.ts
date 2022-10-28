@@ -1,14 +1,13 @@
 import { InternalServerErrorException, Logger, NotFoundException } from "@nestjs/common";
 import { CreateTokenRequest } from "src/models/token-request";
-import { DynamoDBClient, GetItemCommand } from "@aws-sdk/client-dynamodb";
-
 export class TokenRepository {
-    private db: DynamoDBClient;
     private tableName: string;
-
+    private db: any;
     constructor() {
-        this.db = new DynamoDBClient({ region: 'us-east-2' });
         this.tableName = 'TokenTable'
+        var AWS = require('aws-sdk');
+        AWS.config.update({ region: 'us-east-2' });
+        this.db = new AWS.DynamoDB({ apiVersion: '2012-08-10' });
     }
 
     public async getToken(tokenKey: string): Promise<string> {
@@ -16,17 +15,17 @@ export class TokenRepository {
 
         try {
             var params = {
-                TableName: this.tableName,
                 Key: {
-                    'TokenKey': { S: 'test' }
-                }
+                    "TokenKey": { "S": "test" }
+                },
+                TableName: "TokenTable"
             };
 
-            const result = await this.db.send(new GetItemCommand(params));
+            const result = await this.db.getItem(params).promise();
 
-            if (result.Item) {
+            /* if (result.Item) {
                 tokenValue = result.Item['TokenValue']['S'] ?? '';
-            }
+            } */
 
         } catch (error) {
             throw new InternalServerErrorException(error, 'Error trying to ' +
